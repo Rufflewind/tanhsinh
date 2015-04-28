@@ -1,10 +1,16 @@
-#ifndef DOUBLE_EXPONENTIAL_INTEGRATION_CONSTANTS_H
-#define DOUBLE_EXPONENTIAL_INTEGRATION_CONSTANTS_H
+#include <float.h>
+#include <limits.h>
+#include <math.h>
+#include <stddef.h>
+#include "tanhsinh.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
 The double exponential rule is based on the observation that the trapezoid rule converges
-very rapidly for functions on the entire real line that go to zero like exp( - exp(t) ).
-The change of variables x = tanh( pi sinh(t) /2) transforms an integral over [-1, 1]
+very rapidly for functions on the entire real line that go to zero like exp(-exp(t)).
+The change of variables x = tanh(pi sinh(t)/2) transforms an integral over [-1, 1]
 into an integral with integrand suited to the double exponential rule.
 
 The transformed integral is infinite, but we truncate the domain of integration to [-3, 3].
@@ -32,25 +38,24 @@ hardly matter due to the rapid decay of the integrand.
 All values below were calculated with Mathematica.
 */
 
-static const double doubleExponentialAbcissas[] = 
-{
-    // 1st layer abcissas: transformed 0, 1, 2, 3
+static const double nodes[] = {
+    /* 1st layer nodes: transformed 0, 1, 2, 3 */
     0.00000000000000000000,
     0.95136796407274694573,
     0.99997747719246159286,
     0.99999999999995705839,
-    // 2nd layer abcissas: transformed 1/2, 3/2, 5/2
+    /* 2nd layer nodes: transformed 1/2, 3/2, 5/2 */
     0.67427149224843582608,
     0.99751485645722438683,
     0.99999998887566488198,
-    // 3rd layer abcissas: transformed 1/4, 3/4, ...
+    /* 3rd layer nodes: transformed 1/4, 3/4, ... */
     0.37720973816403417379,
     0.85956905868989663517,
     0.98704056050737689169,
     0.99968826402835320905,
     0.99999920473711471266,
     0.99999999995285644818,
-    // 4th layer abcissas: transformed 1/8, 3/8, ...
+    /* 4th layer nodes: transformed 1/8, 3/8, ... */
     0.19435700332493543161,
     0.53914670538796776905,
     0.78060743898320029925,
@@ -63,7 +68,7 @@ static const double doubleExponentialAbcissas[] =
     0.99999989278161241838,
     0.99999999914270509218,
     0.99999999999823216531,
-    // 5th layer abcissa: transformed 1/16, 3/16, ...
+    /* 5th layer node: transformed 1/16, 3/16, ... */
     0.097923885287832333262,
     0.28787993274271591456,
     0.46125354393958570440,
@@ -88,7 +93,7 @@ static const double doubleExponentialAbcissas[] =
     0.99999999978973286224,
     0.99999999999039393352,
     0.99999999999970809734,
-    // 6th layer abcissas: transformed 1/32, 3/32, ...
+    /* 6th layer nodes: transformed 1/32, 3/32, ... */
     0.049055967305077886315,
     0.14641798429058794053,
     0.24156631953888365838,
@@ -137,7 +142,7 @@ static const double doubleExponentialAbcissas[] =
     0.99999999999582460688,
     0.99999999999927152627,
     0.99999999999988636130,
-    // 7th layer abcissas: transformed 1/64, 3/64, ...
+    /* 7th layer nodes: transformed 1/64, 3/64, ... */
     0.024539763574649160379,
     0.073525122985671294475,
     0.12222912220155764235,
@@ -234,27 +239,26 @@ static const double doubleExponentialAbcissas[] =
     0.99999999999953722654,
     0.99999999999981720098,
     0.99999999999992987953
-}; // end abcissas
+};
 
-static const double doubleExponentialWeights[] =
-{
-    // First layer weights
+static const double weights[] = {
+    /* First layer weights */
     1.5707963267948966192,
     0.230022394514788685,
     0.00026620051375271690866,
     1.3581784274539090834e-12,
-    // 2nd layer weights
+    /* 2nd layer weights */
     0.96597657941230114801,
     0.018343166989927842087,
     2.1431204556943039358e-7,
-    // 3rd layer weights
+    /* 3rd layer weights */
     1.3896147592472563229,
     0.53107827542805397476,
     0.076385743570832304188,
     0.0029025177479013135936,
     0.000011983701363170720047,
     1.1631165814255782766e-9,
-    // 4th layer weights
+    /* 4th layer weights */
     1.5232837186347052132,
     1.1934630258491569639,
     0.73743784836154784136,
@@ -267,7 +271,7 @@ static const double doubleExponentialWeights[] =
     1.8263320593710659699e-6,
     1.8687282268736410132e-8,
     4.9378538776631926964e-11,
-    //  5th layer weights
+    /*  5th layer weights */
     1.5587733555333301451,
     1.466014426716965781,
     1.297475750424977998,
@@ -292,7 +296,7 @@ static const double doubleExponentialWeights[] =
     4.8760060974240625869e-9,
     2.5216347918530148572e-10,
     8.6759314149796046502e-12,
-    // 6th layer weights
+    /* 6th layer weights */
     1.5677814313072218572,
     1.5438811161769592204,
     1.4972262225410362896,
@@ -341,7 +345,7 @@ static const double doubleExponentialWeights[] =
     1.1306055347494680536e-10,
     2.0989335404511469109e-11,
     3.4841937670261059685e-12,
-    // 7th layer weights
+    /* 7th layer weights */
     1.5700420292795931467,
     1.5640214037732320999,
     1.5520531698454121192,
@@ -438,6 +442,106 @@ static const double doubleExponentialWeights[] =
     1.3542512912336274432e-11,
     5.5182369468174885821e-12,
     2.1835922099233609052e-12
-}; // end weights
+};
 
-#endif // include guard
+/* Offsets to where each level's integration constants start.
+   The last element is not a beginning but an end. */
+static const size_t offsets[] = {1, 4, 7, 13, 25, 49, 97, 193};
+
+static const size_t num_levels = sizeof(offsets) / sizeof(*offsets) - 1;
+
+/* Integrate f(c x + d) with the given integration constants. */
+static double integrate(double f(double x, void *ctx), void *ctx,
+                        double c, /* slope     of change of variables */
+                        double d, /* intercept of change of variables */
+                        double abs_err, double *est_err, unsigned *num_eval)
+{
+    size_t i, level;
+    double
+        prev_delta,
+        curr_delta   = DBL_MAX,
+        curr_est_err = DBL_MAX,
+        new_contrib  = 0.,
+        integral     = 0.,
+        dx           = 1.;
+
+    abs_err *= c;
+
+    integral = f(c * nodes[0] + d, ctx) * weights[0];
+    for (i = offsets[0]; i != offsets[1]; ++i)
+        integral += weights[i] * (f( c * nodes[i] + d, ctx) +
+                                  f(-c * nodes[i] + d, ctx));
+
+    for (level = 1; level != num_levels; ++level) {
+        double r;
+        dx *= .5;
+        new_contrib = 0.;
+        for (i = offsets[level]; i != offsets[level + 1]; ++i)
+            new_contrib += weights[i] * (f( c * nodes[i] + d, ctx) +
+                                         f(-c * nodes[i] + d, ctx));
+        new_contrib *= dx;
+
+        /* difference in consecutive integral estimates */
+        prev_delta = curr_delta;
+        curr_delta = fabs(.5 * integral - new_contrib);
+        integral = .5 * integral + new_contrib;
+
+        /* Once convergence kicks in, error is approximately squared at each
+           step.  Determine whether we're in the convergent region by looking
+           at the trend in the error. */
+        if (level == 1)
+            /* prev_delta meaningless, so cannot check convergence. */
+            continue;
+
+        /* Exact comparison with zero is harmless here.  Could possibly be
+           replaced with a small positive upper limit on the size of
+           curr_delta, but determining that upper limit would be difficult.
+           At worse, the loop is executed more times than necessary.  But no
+           infinite loop can result since there is an upper bound on the loop
+           variable. */
+        if (!curr_delta)
+            break;
+        /* prev_delta != 0 or would have been kicked out previously */
+        r = log(curr_delta) / log(prev_delta);
+
+        if (r > 1.9 && r < 2.1)
+            /* If convergence theory applied perfectly, r would be 2 in the
+               convergence region.  r close to 2 is good enough. We expect the
+               difference between this integral estimate and the next one to
+               be roughly delta^2. */
+            curr_est_err = curr_delta * curr_delta;
+        else
+            /* Not in the convergence region.  Assume only that error is
+               decreasing. */
+            curr_est_err = curr_delta;
+
+        if (curr_est_err < .1 * abs_err)
+            break;
+    }
+
+    if (num_eval) {
+        const size_t actual_num_eval = 2 * i - 1;
+        *num_eval = (unsigned)actual_num_eval;
+        /* Deal with potential overflow. */
+        if ((size_t)*num_eval != actual_num_eval)
+            *num_eval = UINT_MAX;
+    }
+    if (est_err)
+        *est_err = curr_est_err * c;
+    return c * integral;
+}
+
+double tanhsinh_quad(double f(double x, void *ctx), void *ctx,
+                     double a, double b, double abs_err,
+                     double *est_err, unsigned *num_eval)
+{
+    /* Apply the linear change of variables x = c t + d:
+       integral[a, b] f(x) dx = c int[-1; 1] f(c t + d) dt,
+       where c = (b - a) / 2 and d = (a + b) / 2. */
+    return integrate(f, ctx, .5 * (b - a), .5 * (b + a),
+                     abs_err, est_err, num_eval);
+}
+
+#ifdef __cplusplus
+}
+#endif
