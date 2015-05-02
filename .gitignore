@@ -1,0 +1,22 @@
+# generic
+dist/
+.\#*
+.nfs????
+*~
+*.log
+*.tmp
+
+# native
+a.out
+*.a
+*.dll
+*.dylib
+*.exe
+*.gch
+*.ipch
+*.lib
+*.o
+*.obj
+*.so
+*.sdf
+*.stackdump
