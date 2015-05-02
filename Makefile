@@ -47,7 +47,7 @@ uninstall:
 
 dist/bin/tanhsinh-example: dist/tmp/example.o dist/lib/libtanhsinh.a
 	mkdir -p dist/bin
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ \
+	$(CC) $(LDFLAGS) -o $@ \
 	    dist/tmp/example.o dist/lib/libtanhsinh.a $(LIBS)
 
 dist/lib/libtanhsinh.a: dist/tmp/tanhsinh.o
@@ -62,7 +62,7 @@ dist/lib/libtanhsinh.so.$(major): dist/lib/libtanhsinh.so.$(version)
 
 dist/lib/libtanhsinh.so.$(version): dist/tmp/tanhsinh.o
 	mkdir -p dist/lib
-	$(CC) -shared -Wl,-soname,libtanhsinh.so.$(major) -o $@ \
+	$(CC) $(LDFLAGS) -shared -Wl,-soname,libtanhsinh.so.$(major) -o $@ \
 	    dist/tmp/tanhsinh.o $(LIBS)
 
 dist/tmp/tanhsinh.o: tanhsinh.c tanhsinh.h
