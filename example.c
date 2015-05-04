@@ -3,13 +3,13 @@
 #include <stdio.h>
 #include "tanhsinh.h"
 
-double f(double x, void *ctx)
+double f(double x, const void *ctx)
 {
     (void)ctx;
     return exp(-x / 5.) * (2. + sin(2. * x));
 }
 
-double g(double x, void *ctx)
+double g(double x, const void *ctx)
 {
     const double power = *(const double *)ctx;
     return pow(1. - x, power) * pow(x, -1. / 3.);
@@ -39,7 +39,7 @@ int main(void)
     {
         static const double power = 5.;
         static const double exact = 0.417685255920550038197;
-        result = tanhsinh_quad(g, (void *)&power, 0, 1, tolerance, NULL, NULL);
+        result = tanhsinh_quad(g, &power, 0, 1, tolerance, NULL, NULL);
         printf("integral[0,  1] (1 - x)^5 x^(-1/3):\n"
                "  exact:    %.17g\n"
                "  numeric:  %.17g\n",
