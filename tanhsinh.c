@@ -466,7 +466,7 @@ static double integrate(double (*f)(double x, const void *ctx),
         integral     = 0.,
         dx           = 1.;
 
-    abs_err *= c;
+    abs_err /= c;
 
     integral = (*f)(c * nodes[0] + d, ctx) * weights[0];
     for (i = offsets[0]; i != offsets[1]; ++i)
