@@ -451,7 +451,7 @@ static const size_t offsets[] = {1, 4, 7, 13, 25, 49, 97, 193};
 static const size_t num_levels = sizeof(offsets) / sizeof(*offsets) - 1;
 
 /* Integrate f(c x + d) with the given integration constants. */
-static double integrate(double f(double x, void *ctx), void *ctx,
+static double integrate(double (*f)(double x, void *ctx), void *ctx,
                         double c, /* slope     of change of variables */
                         double d, /* intercept of change of variables */
                         double abs_err, double *est_err, unsigned *num_eval)
@@ -467,18 +467,18 @@ static double integrate(double f(double x, void *ctx), void *ctx,
 
     abs_err *= c;
 
-    integral = f(c * nodes[0] + d, ctx) * weights[0];
+    integral = (*f)(c * nodes[0] + d, ctx) * weights[0];
     for (i = offsets[0]; i != offsets[1]; ++i)
-        integral += weights[i] * (f( c * nodes[i] + d, ctx) +
-                                  f(-c * nodes[i] + d, ctx));
+        integral += weights[i] * ((*f)( c * nodes[i] + d, ctx) +
+                                  (*f)(-c * nodes[i] + d, ctx));
 
     for (level = 1; level != num_levels; ++level) {
         double r;
         dx *= .5;
         new_contrib = 0.;
         for (i = offsets[level]; i != offsets[level + 1]; ++i)
-            new_contrib += weights[i] * (f( c * nodes[i] + d, ctx) +
-                                         f(-c * nodes[i] + d, ctx));
+            new_contrib += weights[i] * ((*f)( c * nodes[i] + d, ctx) +
+                                         (*f)(-c * nodes[i] + d, ctx));
         new_contrib *= dx;
 
         /* difference in consecutive integral estimates */
@@ -531,7 +531,7 @@ static double integrate(double f(double x, void *ctx), void *ctx,
     return c * integral;
 }
 
-double tanhsinh_quad(double f(double x, void *ctx), void *ctx,
+double tanhsinh_quad(double (*f)(double x, void *ctx), void *ctx,
                      double a, double b, double abs_err,
                      double *est_err, unsigned *num_eval)
 {

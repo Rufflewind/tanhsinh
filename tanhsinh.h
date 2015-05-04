@@ -21,18 +21,18 @@
 extern "C" {
 #endif
 
-/** Integrate an analytic function over a finite interval.
+/** Integrate an analytic real function over a finite interval.
 
     @param[in]     f        integrand
     @param[in,out] ctx      arbitrary argument for `f`
-    @param[in]     a left   limit of integration
-    @param[in]     b right  limit of integration
+    @param[in]     a        left limit of integration
+    @param[in]     b        right limit of integration
     @param[in]     abs_err  desired bound on error
     @param[out]    est_err  estimated error of integral (can be `NULL`)
     @param[out]    num_eval number of function evaluations used (can be `NULL`)
     @return                 The value of the integral.
 */
-double tanhsinh_quad(double f(double x, void *ctx), void *ctx,
+double tanhsinh_quad(double (*f)(double x, void *ctx), void *ctx,
                      double a, double b, double abs_err,
                      double *est_err, unsigned *num_eval);
 

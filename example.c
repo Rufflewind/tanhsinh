@@ -11,7 +11,7 @@ double f(double x, void *ctx)
 
 double g(double x, void *ctx)
 {
-    const double power = *(double *)ctx;
+    const double power = *(const double *)ctx;
     return pow(1. - x, power) * pow(x, -1. / 3.);
 }
 
